@@ -30,7 +30,7 @@ def test_user_profile_requires_login(client):
 
 
 def test_user_profile_returns_database_record(client):
-    client.get("/login/alice")
+    client.get("/login/bob")
     response = client.get("/api/users/2")
 
     assert response.status_code == 200
@@ -42,6 +42,11 @@ def test_user_profile_returns_database_record(client):
         "phone": "555-0102",
         "home_address": "202 Oak St, Riverton",
     }
+
+
+def test_user_profile_rejects_another_users_record(client):
+    client.get("/login/alice")
+    assert client.get("/api/users/2").status_code == 403
 
 
 def test_user_profile_returns_not_found_for_unknown_id(client):

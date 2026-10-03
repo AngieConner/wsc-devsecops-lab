@@ -66,6 +66,8 @@ def user_profile(user_id):
     user = db.find_user_by_id(user_id)
     if user is None:
         abort(404)
+    if user["id"] != session["user_id"]:
+        abort(403)
     return jsonify(dict(user))
 
 
